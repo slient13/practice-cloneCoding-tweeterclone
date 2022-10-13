@@ -7,7 +7,7 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // 각 정보를 환경 변수의 형태로 분리한 이유는 github의 공개된 저장소에 보안상 민감한 정보가 수록되는 것을 방지하기 위함이다.
 // 단, 이렇게 해도 최종 빌드된 데이터에 포함되므로 완전히 숨겨지는 것은 아니다.
-const firebaseConfig = { 
+let firebaseConfig = { 
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_PROJECT_ID,

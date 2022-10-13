@@ -7,7 +7,7 @@ const Profile = ({ isLoggedIn }) => {
         fbAuth.signOut();
     }
     const navigate = useNavigate();
-    useEffect(() => {if (!isLoggedIn) navigate("/auth");});
+    useEffect(() => {if (!isLoggedIn) navigate("/auth");}, [isLoggedIn]);
 
     return <button onClick={onLogOutClicked}>Log Out</button>;
 }

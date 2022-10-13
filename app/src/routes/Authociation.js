@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const Authociation = ({ isLoggedIn }) => {
     const navigate = useNavigate();
-    useEffect(() => { if (isLoggedIn) navigate("/") });
+    useEffect(() => { if (isLoggedIn) navigate("/") }, [isLoggedIn]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
