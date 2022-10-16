@@ -9,16 +9,22 @@ const Profile = ({ isLoggedIn, userObj, userProfileData }) => {
         fbAuth.signOut();
     }
     const navigate = useNavigate();
-    useEffect(() => {if (!isLoggedIn) navigate("/auth");}, [isLoggedIn]);
-
+    useEffect(() => {
+        if (!isLoggedIn) navigate("/auth");
+    }, [isLoggedIn]);
+    // console.log({ isLoggedIn, userObj });
     // console.log("Profile: rendering");
-    const userId = userObj.uid
+    const userId = userObj?.uid ?? undefined
     const userName = userProfileData?.[userId]?.displayName ?? userId;
     return (
         <>
-            <ProfileChange userId={userId} userName={userName} /><br/>
-            <button onClick={onLogOutClicked}>Log Out</button><br/>
-            <MyNweets userId={userObj.uid} userProfileData={userProfileData}/>
+            {
+                isLoggedIn && (<>
+                    <ProfileChange userId={userId} userName={userName} /><br />
+                    <button onClick={onLogOutClicked}>Log Out</button><br />
+                    <MyNweets userId={userObj.uid} userProfileData={userProfileData} />
+                </>)
+            }
         </>
     )
 }

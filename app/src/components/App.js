@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     // reference: https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#onauthstatechanged
     auth.onAuthStateChanged((user) => {
-      user && setUserObj(user);
+      setUserObj(user);
       setInit(true);
     });
     onSnapshot(collection(fbDB, "userData"), () => {
