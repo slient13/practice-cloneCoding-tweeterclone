@@ -1,23 +1,22 @@
-import { fbDB } from "fbInstance/fbDB";
-import { addDoc, collection, getDocs } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Contents } from "./Contents";
-import { NweetForm } from "./NweetForm";
+import { Contents } from "./Home/Contents"
+import { NweetForm } from "./Home/NweetForm";
 
-const Home = ({ isLoggedIn, userObj }) => {
+const Home = ({ isLoggedIn, userObj, userProfileData }) => {
     const navigate = useNavigate();
     useEffect(() => {
         if (!isLoggedIn) navigate("/auth");
     }, [isLoggedIn]);
 
+    // console.log("Home: rendering");
     return (
-        <>
+        <>            
             {
                 isLoggedIn &&
                 (<>
                     <NweetForm userId={userObj.uid} />
-                    <Contents userId={userObj.uid} />
+                    <Contents userId={userObj.uid} userProfileData={userProfileData}/>
                 </>)
             }
         </>

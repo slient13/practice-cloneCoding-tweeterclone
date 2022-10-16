@@ -7,7 +7,7 @@ import Home from "routes/Home";
 import Profile from "routes/Profile";
 import { Navigation } from "./Navigation";
 
-const AppRouter = ({ isLoggedIn, userObj }) => {
+const AppRouter = ({ isLoggedIn, userObj, userProfileData }) => {
     const target = {
         /* 
         react-router-dom@6.0.0 이전에는 다음과 같이 작성하였음.
@@ -17,8 +17,8 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
             </Route> 
         )
         */
-        home: { path: "/", element: (<Home isLoggedIn={isLoggedIn} userObj={userObj}/>) },
-        profile: { path: "/profile", element: (<Profile isLoggedIn={isLoggedIn} />) },
+        home: { path: "/", element: (<Home isLoggedIn={isLoggedIn} userObj={userObj} userProfileData={userProfileData}/>) },
+        profile: { path: "/profile", element: (<Profile isLoggedIn={isLoggedIn} userObj={userObj} userProfileData={userProfileData}/>) },
         loginPage: { path: "/auth", element: (<Authociation isLoggedIn={isLoggedIn} />) },
     };
 
@@ -27,7 +27,8 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
         <Router>
             {isLoggedIn && (<Navigation />)}
             <Routes>
-                {Object.values(target).map((e) => <Route key={e.path} path={e.path} element={e.element} />)}
+                {Object.values(target).map((e) => 
+                    <Route key={e.path} path={e.path} element={e.element} />)}
             </Routes>
         </Router >
     );

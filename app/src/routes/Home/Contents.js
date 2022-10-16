@@ -1,27 +1,29 @@
-import { async } from "@firebase/util";
 import { fbDB } from "fbInstance/fbDB";
-import { collection, CollectionReference, doc, getDocs, onSnapshot, orderBy, query, QuerySnapshot } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { NweetBlock } from "./NweetBlock";
+import { NweetBlock } from "./Contents/NweetBlock";
 
 
-export const Contents = ({ userId }) => {
+export const Contents = ({ userId, userProfileData }) => {
     const [contents, setContents] = useState([]);
     useEffect(() => {
-        onSnapshot(collection(fbDB, "nweets"), async (col) => {
+        const onSnapshotRef = onSnapshot(collection(fbDB, "nweets"), async (col) => {
             console.log("Contents: Contents Refresh");
             const queryData = await getDocs(query(collection(fbDB, "nweets"), orderBy("createdAt", "desc")));
             let output = [];
             queryData.forEach((doc) => {
                 const [id, data] = [doc.id, doc.data()]
-                output.push(<NweetBlock key={id} userId={userId} docId={id} docData={data} />)
+                output.push({ id, data })
             })
             setContents(output);
         });
+        return () => {
+            onSnapshotRef();
+        }
     }, [])
     return (
         <>
-            {contents}
+            {contents.map((e) => <NweetBlock key={e.id} userId={userId} docId={e.id} docData={e.data} userProfileData={userProfileData} />)}
         </>
     )
 }
