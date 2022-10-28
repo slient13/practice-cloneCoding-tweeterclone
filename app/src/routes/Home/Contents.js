@@ -1,29 +1,26 @@
-import { fbDB } from "fbInstance/fbDB";
-import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
+import { addSubscribe } from "db/NweetsDB";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { NweetBlock } from "./Contents/NweetBlock";
 
+const BackPanel = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 
-export const Contents = ({ userId, userProfileData }) => {
+export const Contents = () => {
     const [contents, setContents] = useState([]);
     useEffect(() => {
-        const onSnapshotRef = onSnapshot(collection(fbDB, "nweets"), async (col) => {
-            console.log("Contents: Contents Refresh");
-            const queryData = await getDocs(query(collection(fbDB, "nweets"), orderBy("createdAt", "desc")));
-            let output = [];
-            queryData.forEach((doc) => {
-                const [id, data] = [doc.id, doc.data()]
-                output.push({ id, data })
-            })
-            setContents(output);
-        });
+        const unsubscribe = addSubscribe((data) => setContents(data));
         return () => {
-            onSnapshotRef();
+            unsubscribe();
         }
     }, [])
     return (
-        <>
-            {contents.map((e) => <NweetBlock key={e.id} userId={userId} docId={e.id} docData={e.data} userProfileData={userProfileData} />)}
-        </>
+        <BackPanel>
+            {contents?.map((e) => <NweetBlock key={e.id} docId={e.id} docData={e.data} />)}
+        </BackPanel>
     )
 }

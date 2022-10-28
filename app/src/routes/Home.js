@@ -1,23 +1,33 @@
-import React, { useEffect } from "react";
+import { LoginUserContext } from "context/UserContext";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { Contents } from "./Home/Contents"
 import { NweetForm } from "./Home/NweetForm";
 
-const Home = ({ isLoggedIn, userObj, userProfileData }) => {
+const BackPanel = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+`
+
+const Home = () => {
     const navigate = useNavigate();
+    const { isLoggedIn } = useContext(LoginUserContext)
     useEffect(() => {
         if (!isLoggedIn) navigate("/auth");
-    }, [isLoggedIn]);
+    }, [isLoggedIn, navigate]);
 
     // console.log("Home: rendering");
     return (
         <>            
             {
                 isLoggedIn &&
-                (<>
-                    <NweetForm userId={userObj.uid} />
-                    <Contents userId={userObj.uid} userProfileData={userProfileData}/>
-                </>)
+                (<BackPanel>
+                    <NweetForm />
+                    <Contents />
+                </BackPanel>)
             }
         </>
     )

@@ -1,31 +1,30 @@
-import { fbDB } from "fbInstance/fbDB";
-import { collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { useEffect, useId, useState } from "react"
+import { LoginUserContext } from "context/UserContext";
+import { addSubscribe } from "db/NweetsDB";
+import { useContext, useEffect, useState } from "react"
 import { NweetBlock } from "routes/Home/Contents/NweetBlock";
+import styled from "styled-components";
 
-export const MyNweets = ({ userId, userProfileData }) => {
+const BackPanel = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+export const MyNweets = () => {
     const [myNweets, setMyNweets] = useState([]);
+    const { userId, userProfileData } = useContext(LoginUserContext);
     useEffect(() => {
-        const onSnapshotRef = onSnapshot(collection(fbDB, "nweets"), async () => {
-            console.log("MyNweets data loaded.");
-            const queryData = query(
-                collection(fbDB, "nweets"),
-                where("creatorId", "==", "" + userId),
-                orderBy("createdAt", "desc"));
-            const querySnapshot = await getDocs(queryData);
-            let output = [];
-            querySnapshot.forEach((doc) => {
-                output.push({ id: doc.id, data: doc.data() });
-            })
-            setMyNweets(output);
-        })
+        const onSnapshotRef = addSubscribe((docData) => {
+            setMyNweets(docData.filter(v => v.data.creatorId === userId))
+        });
         return () => {
             onSnapshotRef();
         }
-    }, [useId])
+    }, [userId])
 
     return (
-        <>
+        <BackPanel>
             {myNweets.map((e) => <NweetBlock
                 key={e.id}
                 userId={userId}
@@ -33,6 +32,6 @@ export const MyNweets = ({ userId, userProfileData }) => {
                 docData={e.data}
                 userProfileData={userProfileData} />
             )}
-        </>
+        </BackPanel>
     )
 }

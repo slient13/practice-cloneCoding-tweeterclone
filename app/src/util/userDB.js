@@ -1,9 +1,11 @@
 import { fbDB } from "fbInstance/fbDB"
-import { collection, getDocs } from "firebase/firestore"
+import { collection, doc, getDocs, setDoc } from "firebase/firestore"
 
-export const userDB = async () => {
+const userDBName = "UserDB"
+
+export const getUserDB = async () => {
     let userDB = {};
-    const queryData = getDocs(collection(fbDB, "userData"));
+    const queryData = getDocs(collection(fbDB, userDBName));
     (await queryData).forEach((doc) => {
         const id = doc.id;
         userDB[id] = doc.data();
@@ -11,15 +13,22 @@ export const userDB = async () => {
     return userDB;
 }
 
-export const userProfileDB = async () => {
+export const getUserProfileDB = async () => {
     let userProfileDB = {};
-    const _userDB = await userDB();
+    const _userDB = await getUserDB();
     for (const [key, value] of Object.entries(_userDB)) {
         userProfileDB[key] = { displayName: value.displayName };
     }
     return userProfileDB;
 }
 
-/*
-local emulator suite 에서 테스트할 때 사용하는 기본값.
-*/
+/**
+ * 
+ * @param {string} uid // user id
+ * @param {string} newName // display name want to chagne
+ */
+export const setUserProfile = (uid, newName) => {
+    setDoc(doc(fbDB, userDBName, uid), {
+        displayName: newName,
+    });
+}
