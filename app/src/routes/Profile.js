@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { ThemeContext } from "styled-components";
 import { MyNweets } from "./Profile/MyNweets";
-import { ProfileChange } from "./ProfileChange";
+import { ProfileChange } from "./EditProfile";
 
 const BackPanel = styled.div`
     width: 100%;
