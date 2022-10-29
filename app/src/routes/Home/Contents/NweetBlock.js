@@ -73,16 +73,19 @@ export const NweetBlock = ({ docId, docData }) => {
     const timeString = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
     const loadImage = useCallback(async () => {
         // console.log(`loadImage: ${docData.imageUrl}, ${imageDownloadUrl ? "downloadUrl is exist" : "There is no downloadUrl"}`);
-        if (docData.imageUrl === "") imageDownloadUrl && setImageDownloadUrl(undefined);
-        else if (prevImageUrl.current === docData.imageUrl) { }
-        else getDownloadURL(ref(fbStorage, docData.imageUrl))
+        const setDownloadURL = () => getDownloadURL(ref(fbStorage, docData.imageUrl))
             .then((downloadUrl) => {
                 // console.log(`image load finish ${docData.imageUrl}`);
                 setImageDownloadUrl(downloadUrl);
-            })
-            .catch((reason) => {
+            }).catch((reason) => {
                 console.log(reason);
+                setTimeout(() => {
+                    setDownloadURL();
+                }, 500);
             })
+        if (docData.imageUrl === "") imageDownloadUrl && setImageDownloadUrl(undefined);
+        else if (prevImageUrl.current === docData.imageUrl) { }
+        else setDownloadURL();
         prevImageUrl.current = docData.imageUrl;
     }, [docData.imageUrl])
     const deleteNweet = async (event) => {
