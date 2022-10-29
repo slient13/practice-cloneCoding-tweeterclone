@@ -5,8 +5,7 @@
 [description.md](documents/description.md) 참고
 
 # 기타
-hosting URL: https://firsttestapp-songline.web.app
-테스트용 계정: [
-    { id: test1@email.com, pw: 123456, displayName: test1 },
-    { id: test2@email.com, pw: 123456, displayName: test2-another }
-]
+- hosting URL: https://firsttestapp-songline.web.app
+- 테스트용 계정:
+    - id: test1@email.com, pw: 123456, displayName: test1 
+    - id: test2@email.com, pw: 123456, displayName: test2-another
