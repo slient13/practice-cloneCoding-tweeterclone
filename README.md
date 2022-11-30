@@ -9,3 +9,6 @@
 - 테스트용 계정:
     - id: test1@email.com, pw: 123456, displayName: test1 
     - id: test2@email.com, pw: 123456, displayName: test2-another
+
+# 비고
+2022년 11월 9일 이후로 관련 기능이 닫혀있는 상태입니다. 관련 내용은 위의 설명 페이지(description.md)를 참고해주시고, 혹시라도 직접 시연해보고 싶으시다면 이슈를 남겨주시기 바랍니다.
